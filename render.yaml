@@ -1,24 +1,17 @@
 services:
-  - type: web
-    name: telegram-auto-bot
-    env: python
-    region: frankfurt  # أو singapore حسب موقعك
+  - type: worker
+    name: telegram-bot-worker
+    runtime: python
+    plan: starter   # أو free حسب حسابك
+    region: frankfurt
     buildCommand: |
-      pip install --upgrade pip
       pip install -r requirements.txt
-    startCommand: python main.py
+    startCommand: |
+      python main.py
     envVars:
       - key: BOT_TOKEN
         sync: false
-      - key: OWNER_ID
-        value: 8148890042
-      - key: PORT
-        value: 8080
-      - key: PYTHON_VERSION
-        value: 3.11.7
-    healthCheckPath: /
-    autoDeploy: true
-    disk:
-      name: data
-      mountPath: /opt/render/project/src/data
-      sizeGB: 1
+      - key: API_ID
+        sync: false
+      - key: API_HASH
+        sync: false
